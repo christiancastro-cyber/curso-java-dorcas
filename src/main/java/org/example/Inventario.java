@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 
 public class Inventario {
     private List<Tela> telas;
@@ -18,9 +19,13 @@ public class Inventario {
         return telas.size();
     }
 
+    private static String normalizar(String texto) {
+        return StringUtils.stripAccents(texto).toLowerCase();
+    }
+
     public Tela buscarPorNombre(String nombre){
        return telas.stream()
-                .filter(t -> t.getNombre().equalsIgnoreCase(nombre))
+                .filter(t -> normalizar(t.getNombre()).equals(normalizar(nombre)))
                 .findFirst()
                 .orElseThrow( () -> new TelaNoEncontradaException(nombre));
     }
